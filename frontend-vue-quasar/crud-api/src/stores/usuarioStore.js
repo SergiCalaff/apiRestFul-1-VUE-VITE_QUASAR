@@ -21,6 +21,9 @@ export const useUsuarioStore = defineStore('usuario', {
       if (index !== -1){
         this.listaUsuarios[index] = usuarioActualizado;
       }
+    },
+    eliminarUsuarioDeLista(idUser) {
+      this.listaUsuarios = this.listaUsuarios.filter(usuario => usuario.idUser !== idUser);
     }
   },
 });

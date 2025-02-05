@@ -43,7 +43,7 @@
   </template>
   
   <script setup>
-  import { ref } from 'vue';
+  import { ref, watchEffect } from 'vue';
   import {
     getUsuarios,
     getUsuarioById,
@@ -64,9 +64,7 @@
     if (focusedField !== 'email') emailUsuario.value = '';
   };
   
-  
   const listaUsuarios = async () => {
-
     try {
       const usuarios = await getUsuarios();
       usuarioStore.setResultado(usuarios);
@@ -75,6 +73,12 @@
       usuarioStore.setError('No se han encontrado resultados: ' + err.message);
     }
   };
+
+  watchEffect(() => {
+    if (usuarioStore.listaUsuarios.length === 0) {
+      listaUsuarios();
+    }
+  });
   
   const buscarPorId = async () => {
   const id = parseInt(idUsuario.value, 10);

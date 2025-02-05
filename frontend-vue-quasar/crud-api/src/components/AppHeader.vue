@@ -7,9 +7,6 @@
       <router-link to="/buscar-usuarios"><button>Buscar usuarios</button></router-link>
     </div>
     <div>
-      <router-link to="/eliminar-usuario"><button>Eliminar usuarios</button></router-link>
-    </div>
-    <div>
       <router-link to="/"><button>Inicio</button></router-link>
     </div>
   </div>

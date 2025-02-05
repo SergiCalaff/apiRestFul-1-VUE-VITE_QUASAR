@@ -42,7 +42,7 @@ const routes = [
   { path: '/contenido-resultados',
     component: ContenidoResultados,
   },
-  { path: '/eliminar-usuario',
+  { path: '/eliminar-usuario/:id',
     component: EliminarUsuario,
   },
 ];

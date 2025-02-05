@@ -18,12 +18,23 @@ export const actualizarUsuario = async (id, usuario) => {
     email: usuario.email,
     password: usuario.password
   };
-  console.log("USUARIO ACTUALIZADP para enviar al BACKEND: ", usuarioActualizado);
+  
   try  {
     const response = await apiCliente.put(`/usuarios/actualizar/${id}`, usuarioActualizado);
     return response.data;
   } catch (error) {
     console.error('Error al actualizar usuario: ', error);
+    throw error;
+  }
+}
+
+export const eliminarUsuario = async (id) => {
+
+  try {
+    const response = await apiCliente.delete(`/usuarios/eliminar/${id}`);
+    return response.data;
+  } catch (error) {
+    console.error('Error al eliminar usuario', error);
     throw error;
   }
 }
