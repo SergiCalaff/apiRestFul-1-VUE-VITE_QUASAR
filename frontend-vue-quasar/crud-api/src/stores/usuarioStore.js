@@ -1,4 +1,5 @@
-import { defineStore } from 'pinia'
+import { defineStore } from 'pinia';
+import { getUsuarios } from '../services/usuarioService';
 
 export const useUsuarioStore = defineStore('usuario', {
   state: () => ({
@@ -7,8 +8,21 @@ export const useUsuarioStore = defineStore('usuario', {
     error: '',
   }),
   actions: {
+    async getUsuarios() {
+      try {
+        const response = await getUsuarios();
+        this.resultado = response;  //guardamos en RESULTADO
+        this.listaUsuarios = response;  //guardamos para reutilizar
+      } catch (err) {
+        this.error = 'Error al obtener usuarios';
+        console.error(err);
+      }
+    },
+    // setResultado(datos) {
+    //   this.resultado = datos;
+    // },
     setResultado(datos) {
-      this.resultado = datos;
+      this.resultado = Array.isArray(datos) ? datos : [datos];  //Aseguramos que sea un array para evitar error al buscar por id o email
     },
     setError(mensaje) {
       this.error = mensaje;
@@ -24,6 +38,7 @@ export const useUsuarioStore = defineStore('usuario', {
     },
     eliminarUsuarioDeLista(idUser) {
       this.listaUsuarios = this.listaUsuarios.filter(usuario => usuario.idUser !== idUser);
-    }
+    },
+
   },
 });

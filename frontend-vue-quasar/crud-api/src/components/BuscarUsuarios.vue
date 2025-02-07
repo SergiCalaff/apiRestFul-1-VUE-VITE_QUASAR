@@ -1,14 +1,15 @@
 <template>
   <div class="header">
       <div>
-        <button @click="listaUsuarios">Lista de usuarios</button>
+        <q-btn push color="secondary" size="sm" @click="listaUsuarios">Lista de usuarios</q-btn>
       </div>
 
       <div>
         <form @submit.prevent="submitForm">
           <div>
             <label for="id-usuario">Id: </label>
-            <input
+            <q-input
+              :dense="dense"
               type="text"
               v-model="idUsuario"
               name="id-usuario"
@@ -18,7 +19,7 @@
           </div>
           <div>
             <label for="nombre-usuario">Nombre: </label>
-            <input
+            <q-input
               type="text"
               v-model="nombreUsuario"
               name="nombre-usuario"
@@ -28,7 +29,7 @@
           </div>
           <div>
             <label for="email-usuario">Email: </label>
-            <input
+            <q-input
               type="text"
               v-model="emailUsuario"
               name="email-usuario"
@@ -36,7 +37,7 @@
               @focus="limpiarOtrosInputs('email')"
             />
           </div>
-          <button type="submit">Buscar</button>
+          <q-btn push color="secondary" size="md" type="submit">Buscar</q-btn>
         </form>
       </div>
     </div>

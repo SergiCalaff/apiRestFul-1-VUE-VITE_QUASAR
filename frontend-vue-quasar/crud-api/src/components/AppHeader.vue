@@ -1,13 +1,13 @@
 <template>
   <div class="app">
     <div>
-      <router-link to="/crear-usuario"><button>Crear usuarios</button></router-link>
+      <router-link to="/crear-usuario"><q-btn push color="primary">Crear usuarios</q-btn></router-link>
     </div>
     <div>
-      <router-link to="/buscar-usuarios"><button>Buscar usuarios</button></router-link>
+      <router-link to="/buscar-usuarios"><q-btn push color="primary">Buscar usuarios</q-btn></router-link>
     </div>
     <div>
-      <router-link to="/"><button>Inicio</button></router-link>
+      <router-link to="/"><q-btn color="amber">Inicio</q-btn></router-link>
     </div>
   </div>
 </template>
