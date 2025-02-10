@@ -6,7 +6,7 @@
 
         <q-toolbar-title> Gestión - Usuarios </q-toolbar-title>
 
-        <q-select outlined v-model="empresaSelect" :options="optionsEmpresa" label="Outlined" dense>
+        <q-select v-model="empresaSelect" :options="optionsEmpresa" label="Opciones de Empresa" dense>
           <template v-slot:append>
             <q-icon name="work" class="text-white"/>
             <label class="q-pa-md text-white">Empresa </label>
@@ -14,7 +14,7 @@
           </template>
         </q-select>
 
-        <q-select outlined v-model="usuarioSelect" :options="optionsUsuario" label="Outlined" dense>
+        <q-select v-model="usuarioSelect" :options="optionsUsuario" label="Opciones de Usuario" dense>
           <template v-slot:append>
               <q-avatar>
                   <img src="https://cdn.quasar.dev/logo-v2/svg/logo.svg" />

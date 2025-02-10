@@ -1,14 +1,20 @@
 <template>    
-  <q-card>
-    <q-card-section class="bg-primary text-white">
+  <q-card flat square>
+    <q-card-section class="bg-primary text-white flat square">
     <q-toolbar>
       <q-toolbar-title>Usuarios</q-toolbar-title>
 
-      <q-input v-model="buscarUsuarios" filled type="search" @keydown.enter="buscarUsuario">
+      <q-input v-model="buscarUsuarios" filled type="search" dark dense @keydown.enter="buscarUsuario">
         <template v-slot:append>
           <q-icon class="text-white" name="search" @click="buscarUsuario"  />
         </template>
       </q-input>
+
+      <q-item clickable v-ripple @click="modalCrearUsuario = true">
+            <q-item-section avatar>
+              <q-icon name="add" />
+            </q-item-section>
+          </q-item>
       
     </q-toolbar>
   </q-card-section>
@@ -21,7 +27,7 @@
 
       <q-card-section v-else>
     <q-table
-      flat bordered
+      flat square
       :rows="usuarios"
       :columns="columnas"
       row-key="idUser"
@@ -67,6 +73,24 @@
     </q-card>
   </q-dialog>
 
+  <!-- MODAL CREAR NUEVO USUARIO -->
+  <q-dialog v-model="modalCrearUsuario">
+      <q-card>
+        <q-card-section>
+          <div class="text-h6">Crear usuario</div>
+        </q-card-section>
+        <q-card-section>
+          <q-input v-model="nuevoUsuario.nombre" label="Nombre" />
+          <q-input v-model="nuevoUsuario.email" label="Email" />
+          <q-input v-model="nuevoUsuario.password" label="Contraseña" />
+        </q-card-section>
+        <q-card-actions align="right">
+          <q-btn label="Cancelar" flat @click="modalCrearUsuario = false" />
+          <q-btn label="Guardar" color="primary" @click="guardarUsuario" />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
+
   </q-card>
 </template>
 
@@ -79,6 +103,7 @@ import {
   getUsuarioById,
   getUsuarioByNombre,
   getUsuarioByEmail,
+  crearUsuario,
  } from '../services/usuarioService';
 
 const usuarioStore = useUsuarioStore();
@@ -89,7 +114,6 @@ const modalEliminar = ref(false);
 const usuarioActual = ref({});
 const usuarioAEliminar = ref(null);
 const buscarUsuarios = ref('');
-
 const columnas = [
   { name: 'idUser', label: 'ID Usuario', field: 'idUser', align: 'left' },
   { name: 'nombre', label: 'Nombre', field: 'nombre', align: 'left' },
@@ -97,10 +121,27 @@ const columnas = [
   { name: 'password', label: 'Contraseña', field: 'password', align: 'left' },
   { name: 'acciones', label: 'Acciones'},
 ];
+const modalCrearUsuario = ref(false)
+const nuevoUsuario = ref({
+  nombre: '',
+  email: '',
+  password: '',
+})
 
-onMounted( async () => {
-  usuarioStore.getUsuarios();
-});
+const guardarUsuario = async () => {
+  try {
+    console.log("GUARDANDO USUARIO");
+    await crearUsuario(nuevoUsuario.value)
+    console.log('Usuario creado con éxito: ', nuevoUsuario.value)
+
+    nuevoUsuario.value = { nombre: '', email: '', password: '' }
+    modalCrearUsuario.value = false
+    usuarioStore.getUsuarios();
+  } catch (error) {
+    console.error('Error al crear nuevo usuario: ', error)
+    throw error
+  }
+}
 
 const editarUsuario = (usuario) => {
   usuarioActual.value = { ...usuario };
@@ -112,7 +153,6 @@ const guardarEdicion = async () => {
   modalEditar.value = false;
   usuarioStore.getUsuarios();
 };
-
 
 const confirmarEliminar = (id) => {
   usuarioAEliminar.value = id;
@@ -134,7 +174,7 @@ const buscarUsuario = async () => {
     return;
   }
 
-  usuarioStore.setResultado(null);
+  usuarioStore.setResultado([]);
   usuarioStore.setError('');
 
   try {
@@ -159,10 +199,12 @@ const buscarUsuario = async () => {
   }
 };
 
+onMounted( async () => {
+  usuarioStore.getUsuarios();
+});
+
 </script>
 
 <style scoped>
-.usuario-datos {
-  padding: 1em;
-}
+
 </style>
