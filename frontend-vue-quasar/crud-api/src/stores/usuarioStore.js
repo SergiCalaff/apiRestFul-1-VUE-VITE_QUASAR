@@ -11,8 +11,8 @@ export const useUsuarioStore = defineStore('usuario', {
     async getUsuarios() {
       try {
         const response = await getUsuarios();
-        this.resultado = response;  //guardamos en RESULTADO
-        this.listaUsuarios = response;  //guardamos para reutilizar
+        this.resultado = response;  //actualizamos RESULTADO
+        this.listaUsuarios = response;  //Guardamos en la lista para reutilizar
       } catch (err) {
         this.error = 'Error al obtener usuarios';
         console.error(err);

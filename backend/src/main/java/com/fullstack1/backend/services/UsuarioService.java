@@ -10,6 +10,7 @@ import com.fullstack1.backend.models.Usuario;
 import com.fullstack1.backend.repositories.IUsuarioRepository;
 
 import lombok.RequiredArgsConstructor;
+import com.fullstack1.backend.utils.UtilEncriptacion;
 
 @Service
 @RequiredArgsConstructor
@@ -19,11 +20,20 @@ public class UsuarioService {
 
     public Usuario crearUsuario(Usuario usuario) {
 
-        if (usuarioRepo.existsByEmail(usuario.getEmail())) {
-            throw new IllegalArgumentException("Ya existe un usuario con este email.");
+        try {
+            if (usuarioRepo.existsByEmail(usuario.getEmail())) {
+                throw new IllegalArgumentException("Ya existe un usuario con este email.");
+            }
+
+            String passwordEncriptado = UtilEncriptacion.encriptar(usuario.getPassword());
+            usuario.setPassword(passwordEncriptado);
+
+            return usuarioRepo.save(usuario);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException("Error al encriptar la contraseña: " + e.getMessage());
         }
-        return usuarioRepo.save(usuario);
-    }
+    };
 
     public Usuario actualizarUsuario(Long id, Usuario usuario) {
 
@@ -32,7 +42,13 @@ public class UsuarioService {
 
         usuarioExiste.setNombre(usuario.getNombre());
         usuarioExiste.setEmail(usuario.getEmail());
-        usuarioExiste.setPassword(usuario.getPassword());
+
+        try {
+            String passwordEncriptado = UtilEncriptacion.encriptar(usuario.getPassword());
+            usuarioExiste.setPassword(passwordEncriptado);
+        } catch (Exception e) {
+            throw new RuntimeException("Error al encriptar la contraseña");
+        }
 
         return usuarioRepo.save(usuarioExiste);
     }

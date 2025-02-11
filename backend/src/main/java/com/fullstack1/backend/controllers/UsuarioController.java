@@ -38,10 +38,6 @@ public class UsuarioController {
 
     @PutMapping("/actualizar/{id}")
     public ResponseEntity<?> actualizarUsuario(@PathVariable Long id, @RequestBody Usuario usuario) {
-        
-        System.out.println("DATOS RECIBIDOS EN BACKEND");
-        System.out.println("ID recibido: " + id);
-        System.out.println("Usuario recibido: " + usuario);
         return ResponseEntity.ok(usuarioService.actualizarUsuario(id, usuario));
     }
 
@@ -58,7 +54,7 @@ public class UsuarioController {
 
     @GetMapping("/id/{id}")
     public ResponseEntity<?> listarUsuarioPorId(@PathVariable Long id) {
-        System.out.println("ID RECIBODO EN BACKEND: " + id);
+        System.out.println("ID RECIBODO EN BACKEND: " + id);                    ////VERIFICAR DATOS
         Optional<Usuario> usuarioOpt = usuarioService.listarUsuarioPorId(id);
         if (usuarioOpt.isPresent()){
             return ResponseEntity.ok(usuarioOpt.get());
