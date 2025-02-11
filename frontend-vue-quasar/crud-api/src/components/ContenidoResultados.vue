@@ -95,7 +95,7 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue';
+import { ref, computed, onMounted, watchEffect } from 'vue';
 import { useUsuarioStore } from '../stores/usuarioStore';
 import { 
   eliminarUsuario, 
@@ -194,12 +194,14 @@ const buscarUsuario = async () => {
     //usuarioStore.setResultado(resultado);
     usuarioStore.setResultado(Array.isArray(resultado) ? resultado : [resultado]);  //Prevenimos recibir un objeto en búsquedas individuales
 
+    buscarUsuarios.value = '';   //limpiamos input para ver si soluciona listado usuarios
+
   } catch (err) {
     usuarioStore.setError('Error al buscar usuario: ' + err.message);
   }
 };
 
-onMounted( async () => {
+watchEffect( async () => {
   usuarioStore.getUsuarios();
 });
 

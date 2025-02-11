@@ -8,4 +8,5 @@
 import ContenidoResultados from '../components/ContenidoResultados.vue'
 </script>
 
-<style scoped></style>
+<style scoped>
+</style>

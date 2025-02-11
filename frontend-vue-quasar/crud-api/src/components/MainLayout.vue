@@ -66,7 +66,7 @@
 
           <q-separator />
 
-          <q-item clickable v-ripple to="contenido-resultados">
+          <q-item clickable v-ripple @click="listarUsuarios">
             <q-item-section avatar>
               <q-icon name="arrow_circle_left" />
             </q-item-section>
@@ -123,19 +123,24 @@ const nuevoUsuario = ref({
 
 const guardarUsuario = async () => {
   try {
-    console.log("GUARDANDO USUARIO");
     await crearUsuario(nuevoUsuario.value)
-    console.log('Usuario creado con éxito: ', nuevoUsuario.value)
-
     nuevoUsuario.value = { nombre: '', email: '', password: '' }
     modalCrearUsuario.value = false
     usuarioStore.getUsuarios();
+
   } catch (error) {
     console.error('Error al crear nuevo usuario: ', error)
     throw error
   }
 }
 
+const listarUsuarios = async () => {
+  try {
+    usuarioStore.getUsuarios();
+  } catch (error) {
+    console.error('Error al cargar lista de usuarios: ', error);
+  }
+}
 onMounted( async () => {
   usuarioStore.getUsuarios();
 });

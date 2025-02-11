@@ -7,9 +7,9 @@ const routes = [
   {
     path: '/',
     component: MainLayout,
-
     children: [
       { path: '', component: MainView },
+      { path: '/lista-usuarios', component: ContenidoResultados },
       { path: '/buscar-usuarios', component: MainView },
       { path: '/contenido-resultados', component: ContenidoResultados },
     ],
