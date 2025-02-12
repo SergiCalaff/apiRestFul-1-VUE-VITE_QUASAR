@@ -136,13 +136,13 @@ const guardarUsuario = async () => {
 
 const listarUsuarios = async () => {
   try {
-    usuarioStore.getUsuarios();
+    await usuarioStore.getUsuarios();
   } catch (error) {
     console.error('Error al cargar lista de usuarios: ', error);
   }
 }
 onMounted( async () => {
-  usuarioStore.getUsuarios();
+  await usuarioStore.getUsuarios();
 });
 </script>
 

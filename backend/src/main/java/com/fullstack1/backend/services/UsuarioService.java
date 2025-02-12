@@ -31,7 +31,7 @@ public class UsuarioService {
             return usuarioRepo.save(usuario);
         } catch (Exception e) {
             e.printStackTrace();
-            throw new RuntimeException("Error al encriptar la contraseña: " + e.getMessage());
+            throw new RuntimeException("Error al crear el usuario: " + e.getMessage());
         }
     };
 
@@ -47,7 +47,7 @@ public class UsuarioService {
             String passwordEncriptado = UtilEncriptacion.encriptar(usuario.getPassword());
             usuarioExiste.setPassword(passwordEncriptado);
         } catch (Exception e) {
-            throw new RuntimeException("Error al encriptar la contraseña");
+            throw new RuntimeException("Error al actualizar el usuario: " + e.getMessage());
         }
 
         return usuarioRepo.save(usuarioExiste);
@@ -66,13 +66,40 @@ public class UsuarioService {
     }
 
     public Optional<Usuario> listarUsuarioPorId(Long id){
-        return usuarioRepo.findById(id);
+
+        Optional<Usuario> usuarioOpt = usuarioRepo.findById(id);
+
+        if (!usuarioOpt.isPresent()) {
+            throw new NoSuchElementException("Usuario con id " + id + " no encontrado.");
+        }
+        
+        usuarioOpt.ifPresent(usuario -> {
+            try {
+                String passwordDesencriptado = UtilEncriptacion.desencriptar(usuario.getPassword());    
+                usuario.setPassword(passwordDesencriptado);
+            } catch (Exception e) {
+                e.printStackTrace();
+                throw new RuntimeException("Error al obtener el usuario: " + e.getMessage());
+            }
+        });
+        
+        return usuarioOpt;
     }
     public Optional<Usuario> listarUsuarioPorEmail(String email){
-        return usuarioRepo.findByEmail(email);
+        Optional<Usuario> usuarioOpt = usuarioRepo.findByEmail(email);
+        if (!usuarioOpt.isPresent()) {
+            throw new NoSuchElementException("No se encontró ningún usuario con este email: " + email);
+        } else {    
+            return usuarioOpt;
+        }
     }
 
     public List<Usuario> listarUsuarioPorNombre(String nombre){
-        return usuarioRepo.findByNombre(nombre);
+        List<Usuario> usuarios = usuarioRepo.findByNombre(nombre);
+        if (usuarios.isEmpty()) {
+            throw new NoSuchElementException("No se encontró ningún usuario con este nombre: " + nombre);
+        } else {
+            return usuarios;
+        }
     }
 }

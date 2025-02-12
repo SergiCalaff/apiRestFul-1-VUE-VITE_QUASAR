@@ -25,7 +25,6 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.PUT, "/usuarios/**").permitAll() 
                 .requestMatchers("/usuarios/**").permitAll()  //damos acceso a las rutas
                 .anyRequest().authenticated()   //Protege las demás rutas
-                //.anyRequest().permitAll()      //PROBAR FUNCIONA
             );
 
             return http.build();

@@ -13,8 +13,11 @@ export const useUsuarioStore = defineStore('usuario', {
         const response = await getUsuarios();
         this.resultado = response;  //actualizamos RESULTADO
         this.listaUsuarios = response;  //Guardamos en la lista para reutilizar
+        this.error = '';      //limpiamos error si todo ok
       } catch (err) {
         this.error = 'Error al obtener usuarios';
+        this.resultado = [];          //reiniciamos resultado
+        this.listaUsuarios = [];      //reiniciamos lista
         console.error(err);
       }
     },

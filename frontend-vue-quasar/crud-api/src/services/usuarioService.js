@@ -53,8 +53,13 @@ export const getUsuarioById = async (id) => {
     const response = await apiCliente.get(`/usuarios/id/${id}`);
     return response.data;
   } catch (error) {
-    console.error(`Error al buscar usuario por id: `, error);
-    throw error;
+    if (error.response && error.response.status === 404) {
+      console.warn(`Usuario con id ${id} no encontrado`);
+      return null;
+    } else {
+      console.error("Error desconocido: ", error.message);
+      throw new error(error.message);
+    }
   }
 };
 
@@ -63,8 +68,13 @@ export const getUsuarioByNombre = async (nombre) => {
         const response = await apiCliente.get(`/usuarios/nombre/${nombre}`);
         return response.data;
     }catch (error) {
-        console.error(`Error al buscar usuario por nombre: `, error);
-        throw error;
+      if (error.response && error.response.status === 404) {
+        console.error(`Usuario con nombre ${nombre} no encontrado `);
+        return null;
+      } else {
+        console.error("Error desconocido: ", error.message);
+        throw new error(error.message);
+      }
     }
 };
 
@@ -73,9 +83,14 @@ export const getUsuarioByEmail = async (email) => {
         const response = await apiCliente.get(`/usuarios/email/${email}`)
         return response.data;
     } catch (error) {
+      if (error.response && error.response.status === 404) {
+        console.error(`Usuario con email ${email} no encontrado`)
+        return null;
+      } else {
         console.error(`Error al buscar usuario por email: `, error);
         throw error;
+      }
     }
-}
+};
 
 
